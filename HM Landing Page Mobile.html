@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HeritEdge Media — Heritage. Creativity. Edge.</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --saffron: #D4722A;
+    --gold: #C9A84C;
+    --blue: #1C3A5E;
+    --terracotta: #B85C38;
+    --cream: #F7F2EA;
+    --ivory: #FDFAF5;
+    --sand: #E8DCC8;
+    --charcoal: #1A1714;
+    --muted: #7A6E63;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--ivory);
+    color: var(--charcoal);
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── MOTIF BORDER ── */
+  .motif-border {
+    width: 100%;
+    height: 6px;
+    background: repeating-linear-gradient(90deg,
+      var(--saffron) 0px, var(--saffron) 12px,
+      var(--gold) 12px, var(--gold) 24px,
+      var(--blue) 24px, var(--blue) 36px,
+      var(--gold) 36px, var(--gold) 48px);
+    opacity: 0.85;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    background: rgba(253,250,245,0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(201,168,76,0.18);
+    transition: padding 0.3s ease;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--charcoal);
+    text-decoration: none;
+    z-index: 1001;
+    position: relative;
+  }
+  .nav-logo span { color: var(--saffron); }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+    align-items: center;
+  }
+  .nav-links a {
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--saffron); }
+
+  .nav-cta {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ivory);
+    background: var(--blue);
+    padding: 10px 22px;
+    text-decoration: none;
+    transition: background 0.25s, transform 0.2s;
+  }
+  .nav-cta:hover { background: var(--saffron); transform: translateY(-1px); }
+
+  /* Hamburger */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 1001;
+    position: relative;
+    padding: 4px;
+    background: none;
+    border: none;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 1.5px;
+    background: var(--charcoal);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* Mobile menu overlay */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--charcoal);
+    z-index: 999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .mobile-menu.open {
+    display: flex;
+    opacity: 1;
+  }
+  .mobile-menu a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--cream);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    padding: 12px 0;
+    transition: color 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--gold); }
+  .mobile-menu a.mobile-cta {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ivory);
+    background: var(--saffron);
+    padding: 14px 36px;
+    margin-top: 20px;
+  }
+  .mobile-menu-divider {
+    width: 40px;
+    height: 1px;
+    background: rgba(201,168,76,0.3);
+    margin: 8px 0;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero-left {
+    background: var(--blue);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 70px 80px 70px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-left::before {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: -60px;
+    width: 340px; height: 340px;
+    border: 40px solid rgba(201,168,76,0.1);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    bottom: 20px; right: 20px;
+    width: 200px; height: 200px;
+    border: 2px solid rgba(201,168,76,0.15);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .hero-label {
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5.5vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--cream);
+    margin-bottom: 10px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.4s forwards;
+  }
+  .hero-title em { font-style: italic; color: var(--gold); }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.3rem, 2.5vw, 2.6rem);
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(232,220,200,0.55);
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.55s forwards;
+  }
+
+  .hero-desc {
+    font-size: 0.88rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: rgba(232,220,200,0.7);
+    max-width: 380px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.7s forwards;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.85s forwards;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 14px 32px;
+    background: var(--saffron);
+    color: var(--ivory);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.25s, transform 0.2s;
+  }
+  .btn-primary:hover { background: var(--terracotta); transform: translateY(-2px); }
+
+  .btn-ghost {
+    display: inline-block;
+    padding: 13px 32px;
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold);
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: border-color 0.25s, color 0.25s;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--cream); }
+
+  .hero-right {
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 100px 40px;
+  }
+
+  .hero-mandala {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeIn 1.2s ease 1s forwards;
+  }
+  .mandala-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid;
+  }
+  .mandala-ring:nth-child(1) { width:320px;height:320px;border-color:rgba(212,114,42,0.12); animation: spin 60s linear infinite; }
+  .mandala-ring:nth-child(2) { width:240px;height:240px;border-color:rgba(201,168,76,0.18); animation: spin 40s linear infinite reverse; }
+  .mandala-ring:nth-child(3) { width:165px;height:165px;border-color:rgba(28,58,94,0.12); animation: spin 25s linear infinite; }
+  .mandala-ring:nth-child(4) { width:100px;height:100px;border-color:rgba(212,114,42,0.2); }
+  .mandala-ring::before {
+    content:'';position:absolute;top:-4px;left:50%;
+    transform:translateX(-50%);width:7px;height:7px;
+    border-radius:50%;background:var(--gold);opacity:0.5;
+  }
+  .mandala-center { position:relative;z-index:2;text-align:center; }
+  .mandala-icon {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    color: var(--saffron);
+    line-height: 1;
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+  .mandala-text {
+    font-size: 0.62rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .hero-right-label {
+    position: absolute;
+    bottom: 40px; right: 40px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    font-style: italic;
+    writing-mode: vertical-rl;
+    opacity: 0;
+    animation: fadeIn 1s ease 1.3s forwards;
+  }
+
+  /* ── TAGLINE TICKER ── */
+  .tagline-strip {
+    background: var(--charcoal);
+    padding: 20px 0;
+    overflow: hidden;
+  }
+  .tagline-scroll {
+    display: flex;
+    gap: 50px;
+    animation: scrollLeft 22s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+  }
+  .tagline-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(247,242,234,0.5);
+    font-weight: 300;
+  }
+  .tagline-dot { width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0; }
+
+  /* ── SECTIONS ── */
+  section { padding: 100px 70px; }
+
+  .section-label {
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--saffron);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .section-label::before { content:'';width:28px;height:1px;background:var(--saffron); }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 4vw, 3.8rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--charcoal);
+    margin-bottom: 24px;
+  }
+  .section-title em { font-style:italic;color:var(--saffron); }
+  .section-title span { color:var(--blue); }
+
+  /* ── ABOUT ── */
+  #about {
+    background: var(--ivory);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .about-visual { position:relative;height:480px; }
+  .about-card {
+    position:absolute;
+    background:var(--blue);
+    color:var(--cream);
+    padding:48px 40px;
+    width:75%;
+    top:0;left:0;
+    transform:rotate(-1.5deg);
+    transition:transform 0.4s ease;
+  }
+  .about-card:hover { transform:rotate(0deg); }
+  .about-card-title {
+    font-family:'Cormorant Garamond',serif;
+    font-size:2rem;font-weight:300;font-style:italic;
+    margin-bottom:14px;line-height:1.2;color:var(--cream);
+  }
+  .about-card-text { font-size:0.82rem;line-height:1.9;color:rgba(232,220,200,0.65);font-weight:300; }
+  .about-accent {
+    position:absolute;bottom:20px;right:0;
+    width:180px;height:180px;
+    background:var(--sand);
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    text-align:center;padding:20px;z-index:2;
+  }
+  .about-accent-num { font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:var(--saffron);line-height:1; }
+  .about-accent-label { font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-top:8px;font-weight:400; }
+
+  .about-body p { font-size:0.88rem;line-height:1.9;color:var(--muted);margin-bottom:18px;font-weight:300; }
+  .pillars { display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--sand);margin-top:36px;border:1px solid var(--sand); }
+  .pillar { background:var(--ivory);padding:20px 18px;transition:background 0.25s; }
+  .pillar:hover { background:var(--cream); }
+  .pillar-icon { font-size:1.1rem;margin-bottom:8px; }
+  .pillar-name { font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:600;color:var(--blue);margin-bottom:5px; }
+  .pillar-text { font-size:0.73rem;color:var(--muted);line-height:1.6;font-weight:300; }
+
+  /* ── SERVICES ── */
+  #services { background:var(--charcoal);padding:100px 70px; }
+  #services .section-label { color:var(--gold); }
+  #services .section-label::before { background:var(--gold); }
+  #services .section-title { color:var(--cream); }
+  #services .section-title em { color:var(--gold); }
+  .services-intro { font-size:0.86rem;line-height:1.9;color:rgba(247,242,234,0.5);max-width:500px;font-weight:300;margin-bottom:60px; }
+
+  .services-grid {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.06);
+  }
+  .service-card {
+    background:var(--charcoal);
+    padding:40px 34px;
+    position:relative;overflow:hidden;
+    transition:background 0.35s;
+    cursor:default;
+  }
+  .service-card::before {
+    content:'';position:absolute;bottom:0;left:0;
+    width:100%;height:3px;
+    background:linear-gradient(90deg,var(--saffron),var(--gold));
+    transform:scaleX(0);transform-origin:left;transition:transform 0.35s ease;
+  }
+  .service-card:hover { background:#21201E; }
+  .service-card:hover::before { transform:scaleX(1); }
+  .service-num { font-family:'Cormorant Garamond',serif;font-size:0.78rem;color:var(--gold);letter-spacing:0.14em;margin-bottom:20px;font-style:italic;display:block; }
+  .service-title { font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:400;color:var(--cream);margin-bottom:14px;line-height:1.2; }
+  .service-text { font-size:0.76rem;line-height:1.85;color:rgba(247,242,234,0.42);font-weight:300;margin-bottom:22px; }
+  .service-list { list-style:none;display:flex;flex-direction:column;gap:7px; }
+  .service-list li { font-size:0.72rem;color:rgba(247,242,234,0.38);display:flex;align-items:center;gap:10px;font-weight:300; }
+  .service-list li::before { content:'—';color:var(--saffron);font-size:0.62rem;flex-shrink:0; }
+
+  /* ── WHY ── */
+  #why { background:var(--cream);display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start; }
+  .why-body p { font-size:0.86rem;line-height:1.95;color:var(--muted);font-weight:300;margin-bottom:16px; }
+  .values-list { display:flex;flex-direction:column;gap:2px;margin-top:36px; }
+  .value-item {
+    display:flex;align-items:flex-start;gap:18px;
+    padding:16px 0;border-bottom:1px solid var(--sand);
+    transition:padding 0.25s;cursor:default;
+  }
+  .value-item:hover { padding-left:10px; }
+  .value-num { font-family:'Cormorant Garamond',serif;font-size:0.75rem;color:var(--gold);font-style:italic;min-width:26px;margin-top:2px; }
+  .value-name { font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--blue);margin-bottom:4px; }
+  .value-text { font-size:0.75rem;color:var(--muted);line-height:1.7;font-weight:300; }
+
+  .why-visual { display:flex;flex-direction:column;gap:18px;padding-top:55px; }
+  .quote-block { background:var(--blue);padding:42px 38px;position:relative; }
+  .quote-block::before {
+    content:'"';font-family:'Cormorant Garamond',serif;font-size:7rem;
+    color:rgba(201,168,76,0.13);position:absolute;top:-16px;left:22px;line-height:1;
+  }
+  .quote-text { font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;font-style:italic;color:var(--cream);line-height:1.5;position:relative;z-index:1; }
+  .quote-attr { font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-top:18px;font-weight:400; }
+
+  .stat-row { display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--sand);border:1px solid var(--sand); }
+  .stat-box { background:var(--ivory);padding:26px 22px;text-align:center; }
+  .stat-num { font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;color:var(--saffron);display:block;line-height:1; }
+  .stat-label { font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-top:7px;display:block;font-weight:400; }
+
+  /* ── PROCESS ── */
+  #process { background:var(--ivory); }
+  .process-header { display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:60px; }
+  .process-intro { font-size:0.86rem;line-height:1.9;color:var(--muted);font-weight:300; }
+  .process-steps { display:grid;grid-template-columns:repeat(5,1fr);gap:2px;background:var(--sand);border:1px solid var(--sand); }
+  .process-step { background:var(--ivory);padding:36px 24px;transition:background 0.3s;cursor:default; }
+  .process-step:hover { background:var(--blue); }
+  .process-step:hover .step-num,.process-step:hover .step-title,.process-step:hover .step-text { color:var(--cream); }
+  .process-step:hover .step-num { color:var(--gold); }
+  .step-num { font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--sand);display:block;margin-bottom:18px;transition:color 0.3s; }
+  .step-title { font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--blue);margin-bottom:10px;transition:color 0.3s; }
+  .step-text { font-size:0.72rem;line-height:1.72;color:var(--muted);font-weight:300;transition:color 0.3s; }
+
+  /* ── CTA ── */
+  #cta { background:var(--saffron);padding:110px 70px;text-align:center;position:relative;overflow:hidden; }
+  #cta::before { content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:550px;height:550px;border-radius:50%;border:80px solid rgba(255,255,255,0.06); }
+  #cta::after { content:'';position:absolute;bottom:-80px;right:-80px;width:280px;height:280px;border-radius:50%;border:40px solid rgba(255,255,255,0.06); }
+  .cta-label { font-size:0.68rem;letter-spacing:0.24em;text-transform:uppercase;color:rgba(253,250,245,0.6);margin-bottom:20px;font-weight:400; }
+  .cta-title { font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,5.5vw,5rem);font-weight:300;color:var(--ivory);line-height:1.1;margin-bottom:26px;position:relative; }
+  .cta-title em { font-style:italic;opacity:0.75; }
+  .cta-sub { font-size:0.86rem;color:rgba(253,250,245,0.65);font-weight:300;max-width:420px;margin:0 auto 48px;line-height:1.8; }
+  .cta-btns { display:flex;gap:14px;justify-content:center;flex-wrap:wrap; }
+  .btn-white { display:inline-block;padding:14px 38px;background:var(--ivory);color:var(--saffron);font-size:0.78rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;transition:background 0.25s,transform 0.2s; }
+  .btn-white:hover { background:var(--charcoal);color:var(--ivory);transform:translateY(-2px); }
+  .btn-outline-white { display:inline-block;padding:13px 38px;border:1px solid rgba(253,250,245,0.42);color:var(--ivory);font-size:0.78rem;font-weight:400;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;transition:border-color 0.25s,background 0.25s; }
+  .btn-outline-white:hover { border-color:var(--ivory);background:rgba(253,250,245,0.1); }
+
+  /* ── FOOTER ── */
+  footer { background:var(--charcoal);padding:60px 70px 40px; }
+  .footer-top { display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:32px; }
+  .footer-brand-name { font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:600;color:var(--cream);letter-spacing:0.04em;margin-bottom:10px; }
+  .footer-brand-name span { color:var(--saffron); }
+  .footer-tagline { font-size:0.73rem;color:rgba(247,242,234,0.32);font-style:italic;font-family:'Cormorant Garamond',serif;margin-bottom:20px; }
+  .footer-desc { font-size:0.76rem;line-height:1.85;color:rgba(247,242,234,0.38);font-weight:300;max-width:300px; }
+  .footer-col-title { font-size:0.63rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;font-weight:400; }
+  .footer-links { list-style:none; }
+  .footer-links li { margin-bottom:11px; }
+  .footer-links a { font-size:0.78rem;color:rgba(247,242,234,0.42);text-decoration:none;font-weight:300;transition:color 0.2s; }
+  .footer-links a:hover { color:var(--cream); }
+  .footer-bottom { display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px; }
+  .footer-copy { font-size:0.7rem;color:rgba(247,242,234,0.22);font-weight:300; }
+  .footer-location { font-size:0.7rem;color:rgba(247,242,234,0.28);display:flex;align-items:center;gap:8px;font-weight:300; }
+  .footer-location::before { content:'◦';color:var(--saffron); }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal { opacity:0;transform:translateY(32px);transition:opacity 0.7s ease,transform 0.7s ease; }
+  .reveal.visible { opacity:1;transform:translateY(0); }
+  .reveal-delay-1 { transition-delay:0.1s; }
+  .reveal-delay-2 { transition-delay:0.22s; }
+  .reveal-delay-3 { transition-delay:0.36s; }
+  .reveal-delay-4 { transition-delay:0.5s; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+  @keyframes scrollLeft { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  @keyframes slideDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ════════════════════════════════════════
+     RESPONSIVE — TABLET  ≤ 1024px
+  ════════════════════════════════════════ */
+  @media (max-width: 1024px) {
+    nav { padding: 18px 40px; }
+    .nav-links { gap: 24px; }
+    section { padding: 80px 40px; }
+
+    #hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 130px 40px 70px; }
+    .hero-right { display: none; }
+
+    #about { grid-template-columns: 1fr; gap: 50px; }
+    .about-visual { height: 360px; }
+
+    #why { grid-template-columns: 1fr; gap: 50px; }
+    .why-visual { padding-top: 0; }
+
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .process-header { grid-template-columns: 1fr; gap: 20px; }
+    .process-steps { grid-template-columns: repeat(3, 1fr); }
+
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .footer-top > div:first-child { grid-column: 1 / -1; }
+  }
+
+  /* ════════════════════════════════════════
+     RESPONSIVE — MOBILE  ≤ 768px
+  ════════════════════════════════════════ */
+  @media (max-width: 768px) {
+
+    /* NAV */
+    nav { padding: 18px 24px; }
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+
+    /* HERO */
+    #hero { min-height: 100svh; }
+    .hero-left { padding: 100px 24px 60px; }
+    .hero-title { font-size: clamp(2.8rem, 11vw, 4rem); }
+    .hero-subtitle { font-size: clamp(1.1rem, 4.5vw, 1.6rem); margin-bottom: 28px; }
+    .hero-desc { font-size: 0.84rem; margin-bottom: 36px; }
+    .hero-btns { flex-direction: column; gap: 12px; }
+    .btn-primary, .btn-ghost { text-align: center; padding: 14px 28px; }
+
+    /* TAGLINE */
+    .tagline-item { font-size: 0.64rem; }
+
+    /* SECTIONS */
+    section { padding: 70px 24px; }
+
+    /* ABOUT */
+    #about { grid-template-columns: 1fr; gap: 40px; }
+    .about-visual { height: 300px; }
+    .about-card { padding: 32px 28px; width: 80%; }
+    .about-card-title { font-size: 1.5rem; }
+    .about-accent { width: 140px; height: 140px; }
+    .about-accent-num { font-size: 2.4rem; }
+    .pillars { grid-template-columns: 1fr; }
+
+    /* SERVICES */
+    #services { padding: 70px 24px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card:last-child { min-height: 200px; }
+
+    /* WHY */
+    #why { grid-template-columns: 1fr; gap: 40px; }
+    .why-visual { padding-top: 0; }
+    .quote-text { font-size: 1.15rem; }
+    .quote-block { padding: 32px 28px; }
+
+    /* PROCESS */
+    #process { padding: 70px 24px; }
+    .process-header { grid-template-columns: 1fr; gap: 16px; margin-bottom: 40px; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+    .process-step:last-child { grid-column: 1 / -1; }
+
+    /* CTA */
+    #cta { padding: 80px 24px; }
+    .cta-btns { flex-direction: column; align-items: center; }
+    .btn-white, .btn-outline-white { width: 100%; max-width: 280px; text-align: center; padding: 15px 28px; }
+
+    /* FOOTER */
+    footer { padding: 50px 24px 32px; }
+    .footer-top { grid-template-columns: 1fr; gap: 36px; }
+    .footer-top > div:first-child { grid-column: auto; }
+    .footer-desc { max-width: 100%; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
+
+    /* SECTION TITLE */
+    .section-title { font-size: clamp(2rem, 7vw, 2.8rem); }
+  }
+
+  /* ════════════════════════════════════════
+     RESPONSIVE — SMALL MOBILE  ≤ 480px
+  ════════════════════════════════════════ */
+  @media (max-width: 480px) {
+    .hero-left { padding: 90px 20px 52px; }
+    .hero-title { font-size: clamp(2.4rem, 12vw, 3.2rem); }
+    section { padding: 60px 20px; }
+    #services { padding: 60px 20px; }
+    #process { padding: 60px 20px; }
+    #cta { padding: 70px 20px; }
+    footer { padding: 44px 20px 28px; }
+    .process-steps { grid-template-columns: 1fr; }
+    .process-step:last-child { grid-column: auto; }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+    .about-visual { height: 260px; }
+    .about-card { width: 85%; padding: 26px 22px; }
+    .about-accent { width: 120px; height: 120px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Herit<span>Edge</span> Media</a>
+
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#process">Process</a></li>
+  </ul>
+  <a href="#cta" class="nav-cta">Let's Talk</a>
+
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" class="mobile-nav-link">About</a>
+  <div class="mobile-menu-divider"></div>
+  <a href="#services" class="mobile-nav-link">Services</a>
+  <div class="mobile-menu-divider"></div>
+  <a href="#why" class="mobile-nav-link">Why Us</a>
+  <div class="mobile-menu-divider"></div>
+  <a href="#process" class="mobile-nav-link">Process</a>
+  <a href="#cta" class="mobile-cta">Let's Talk</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <p class="hero-label">Jodhpur — Est. 2024</p>
+    <h1 class="hero-title">Heritage.<br><em>Creativity.</em><br>Edge.</h1>
+    <h2 class="hero-subtitle">Where Culture Meets Creativity</h2>
+    <p class="hero-desc">A creative agency rooted in the soul of Jodhpur — crafting brands that feel authentic, look extraordinary, and speak to the world.</p>
+    <div class="hero-btns">
+      <a href="#services" class="btn-primary">Our Services</a>
+      <a href="#cta" class="btn-ghost">Tell Your Story</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-mandala">
+      <div class="mandala-ring"></div>
+      <div class="mandala-ring"></div>
+      <div class="mandala-ring"></div>
+      <div class="mandala-ring"></div>
+      <div class="mandala-center">
+        <div class="mandala-icon">H</div>
+        <div class="mandala-text">Herit<span style="color:var(--saffron)">Edge</span> Media</div>
+      </div>
+    </div>
+    <span class="hero-right-label">Built from Jodhpur · Delivered to the World</span>
+  </div>
+</section>
+
+<div class="motif-border"></div>
+
+<!-- TAGLINE TICKER -->
+<div class="tagline-strip">
+  <div class="tagline-scroll">
+    <span class="tagline-item"><span class="tagline-dot"></span>Brand Strategy</span>
+    <span class="tagline-item"><span class="tagline-dot"></span>Visual Identity</span>
+    <span class="tagline-item"><span class="tagline-dot"></span>Content Creation</span>
+    <span class="tagline-item"><span class="tagline-dot"></span>Social Media</span>
+    <span class="tagline-item"><span class="tagline-dot"></span>Digital Marketing</span>
+    <span class="tagline-item"><span class="tagline-dot"></span>Cultural Storytelling</span>
+    <span class="tagline-item"><span class="tagline-dot"></span>Luxury Minimalism</span>
+    <span class="tagline-item"><span class="tagline-dot"></span>Creative Strategy</span>
+    <span class="tagline-item"><span class="tagline-dot"></span>Brand Strategy</span>
+    <span class="tagline-item"><span class="tagline-dot"></span>Visual Identity</span>
+    <span class="tagline-item"><span class="tagline-dot"></span>Content Creation</span>
+    <span class="tagline-item"><span class="tagline-dot"></span>Social Media</span>
+    <span class="tagline-item"><span class="tagline-dot"></span>Digital Marketing</span>
+    <span class="tagline-item"><span class="tagline-dot"></span>Cultural Storytelling</span>
+    <span class="tagline-item"><span class="tagline-dot"></span>Luxury Minimalism</span>
+    <span class="tagline-item"><span class="tagline-dot"></span>Creative Strategy</span>
+  </div>
+</div>
+
+<div class="motif-border"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-visual reveal">
+    <div class="about-card">
+      <h3 class="about-card-title">Culture is not a<br>backdrop.<br>It's the brief.</h3>
+      <p class="about-card-text">We don't borrow Jodhpur's aesthetic — we live it, breathe it, and translate it into branding that resonates globally while staying deeply rooted.</p>
+    </div>
+    <div class="about-accent">
+      <span class="about-accent-num">∞</span>
+      <span class="about-accent-label">Cultural Depth<br>Modern Edge</span>
+    </div>
+  </div>
+  <div class="about-body">
+    <p class="section-label reveal">Our Philosophy</p>
+    <h2 class="section-title reveal reveal-delay-1">Where <em>timeless</em><br>meets <span>tomorrow</span></h2>
+    <p class="reveal reveal-delay-2">HeritEdge Media is a Jodhpur-based creative agency built on a simple belief — your brand should feel as rich as the culture that surrounds it. We bring together heritage aesthetics, strategic thinking, and modern creativity to tell stories that actually land.</p>
+    <p class="reveal reveal-delay-3">We work with artisans, hotels, tourism brands, and lifestyle businesses — anyone with a story worth telling and the ambition to tell it well.</p>
+    <div class="pillars reveal reveal-delay-4">
+      <div class="pillar">
+        <div class="pillar-icon">◈</div>
+        <div class="pillar-name">Cultural Storytelling</div>
+        <div class="pillar-text">Jodhpur's soul in every touchpoint</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">◇</div>
+        <div class="pillar-name">Luxury Minimalism</div>
+        <div class="pillar-text">Clean, elegant, deliberately premium</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">◉</div>
+        <div class="pillar-name">Creative Strategy</div>
+        <div class="pillar-text">Beauty with purpose, always</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">◎</div>
+        <div class="pillar-name">Originality</div>
+        <div class="pillar-text">No templates. Everything distinctly crafted</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <p class="section-label reveal">What We Do</p>
+  <h2 class="section-title reveal reveal-delay-1">Five ways we <em>elevate</em><br>your brand</h2>
+  <p class="services-intro reveal reveal-delay-2">From identity to Instagram, strategy to storytelling — we cover the full spectrum of what a modern brand needs to stand out, stay relevant, and grow.</p>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <span class="service-num">01</span>
+      <h3 class="service-title">Brand Strategy<br>& Identity</h3>
+      <p class="service-text">The foundation your brand stands on. We shape how the world sees you — from your name to your visual language.</p>
+      <ul class="service-list">
+        <li>Brand naming & positioning</li>
+        <li>Visual identity design</li>
+        <li>Brand voice & messaging</li>
+        <li>Moodboards & direction</li>
+      </ul>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <span class="service-num">02</span>
+      <h3 class="service-title">Social Media<br>Management</h3>
+      <p class="service-text">We turn your Instagram into a portfolio worth scrolling. Strategy-led, story-driven, community-focused.</p>
+      <ul class="service-list">
+        <li>Instagram strategy & planning</li>
+        <li>Reels, carousels, stories</li>
+        <li>Caption writing & storytelling</li>
+        <li>Growth & engagement</li>
+      </ul>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <span class="service-num">03</span>
+      <h3 class="service-title">Content<br>Creation</h3>
+      <p class="service-text">Photography, video, motion graphics — crafted to make your brand look as good as it deserves to.</p>
+      <ul class="service-list">
+        <li>Product & lifestyle photography</li>
+        <li>Cinematic videography & Reels</li>
+        <li>Motion graphics</li>
+        <li>Creative direction</li>
+      </ul>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <span class="service-num">04</span>
+      <h3 class="service-title">Digital<br>Marketing</h3>
+      <p class="service-text">Visibility with intention. We run campaigns that convert, not just campaigns that run.</p>
+      <ul class="service-list">
+        <li>Facebook & Google Ads</li>
+        <li>SEO-focused content</li>
+        <li>Landing pages & funnels</li>
+        <li>Email campaigns</li>
+      </ul>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <span class="service-num">05</span>
+      <h3 class="service-title">Consultation<br>& Creative Support</h3>
+      <p class="service-text">Need a thinking partner? We align your business vision with a brand strategy that actually makes sense.</p>
+      <ul class="service-list">
+        <li>Brand audits</li>
+        <li>Business-brand alignment</li>
+        <li>Social media consultations</li>
+        <li>Shoot creative direction</li>
+      </ul>
+    </div>
+    <div class="service-card reveal reveal-delay-3" style="background:rgba(201,168,76,0.06);display:flex;align-items:center;justify-content:center;text-align:center;min-height:220px;">
+      <div>
+        <p style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;font-style:italic;color:var(--gold);margin-bottom:14px;line-height:1.3;">"Every brief is a<br>story waiting<br>to be told."</p>
+        <a href="#cta" class="btn-primary" style="display:inline-block;margin-top:6px;">Let's Tell Yours</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY HERITEDGE -->
+<section id="why">
+  <div class="why-body">
+    <p class="section-label reveal">Why HeritEdge</p>
+    <h2 class="section-title reveal reveal-delay-1">Not just a vendor.<br>A <em>creative partner.</em></h2>
+    <p class="reveal reveal-delay-2">Most agencies apply the same template to every client. We don't. We start from scratch every time — understanding your culture, your audience, and your ambition before we touch a single pixel.</p>
+    <p class="reveal reveal-delay-3">We're built different because we're built from Jodhpur — a city that has been telling extraordinary stories through stone, colour, and craft for centuries. That's our edge.</p>
+    <div class="values-list">
+      <div class="value-item reveal">
+        <span class="value-num">i</span>
+        <div>
+          <div class="value-name">Authenticity First</div>
+          <div class="value-text">True to your roots, culture, and story. No copy-paste marketing.</div>
+        </div>
+      </div>
+      <div class="value-item reveal reveal-delay-1">
+        <span class="value-num">ii</span>
+        <div>
+          <div class="value-name">Minimalism as a Default</div>
+          <div class="value-text">Clean, intentional, clutter-free. We remove until only the essential remains.</div>
+        </div>
+      </div>
+      <div class="value-item reveal reveal-delay-2">
+        <span class="value-num">iii</span>
+        <div>
+          <div class="value-name">Creativity with Strategy</div>
+          <div class="value-text">Beautiful work that moves needles. Not just pretty — purposeful.</div>
+        </div>
+      </div>
+      <div class="value-item reveal reveal-delay-3">
+        <span class="value-num">iv</span>
+        <div>
+          <div class="value-name">Client Partnership</div>
+          <div class="value-text">We grow with you, not just for you. Your wins are our wins.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="why-visual">
+    <div class="quote-block reveal">
+      <p class="quote-text">"To make culturally-rooted, creatively-elevated branding the new global standard — built from Jodhpur, delivered to the world."</p>
+      <p class="quote-attr">— Our Vision</p>
+    </div>
+    <div class="stat-row reveal reveal-delay-1">
+      <div class="stat-box"><span class="stat-num">5+</span><span class="stat-label">Service Verticals</span></div>
+      <div class="stat-box"><span class="stat-num">∞</span><span class="stat-label">Cultural Depth</span></div>
+      <div class="stat-box"><span class="stat-num">1</span><span class="stat-label">Vision</span></div>
+      <div class="stat-box"><span class="stat-num">0</span><span class="stat-label">Templates Used</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-header">
+    <div>
+      <p class="section-label reveal">How We Work</p>
+      <h2 class="section-title reveal reveal-delay-1">Five steps.<br>One <em>signature</em> outcome.</h2>
+    </div>
+    <p class="process-intro reveal reveal-delay-2">Every project follows a deliberate process — designed to uncover your brand's truth, shape its voice, and deliver work that stands apart.</p>
+  </div>
+  <div class="process-steps">
+    <div class="process-step reveal">
+      <span class="step-num">01</span>
+      <div class="step-title">Discovery</div>
+      <div class="step-text">We listen, research, and uncover what makes your brand worth talking about.</div>
+    </div>
+    <div class="process-step reveal reveal-delay-1">
+      <span class="step-num">02</span>
+      <div class="step-title">Strategy</div>
+      <div class="step-text">Positioning, voice, visual direction — the blueprint before the brushstroke.</div>
+    </div>
+    <div class="process-step reveal reveal-delay-2">
+      <span class="step-num">03</span>
+      <div class="step-title">Creation</div>
+      <div class="step-text">Design, film, write, direct — this is where ideas become tangible.</div>
+    </div>
+    <div class="process-step reveal reveal-delay-3">
+      <span class="step-num">04</span>
+      <div class="step-title">Execution</div>
+      <div class="step-text">Scheduled, precise, consistent. Your brand shows up every time.</div>
+    </div>
+    <div class="process-step reveal reveal-delay-4">
+      <span class="step-num">05</span>
+      <div class="step-title">Optimise</div>
+      <div class="step-text">Read the data, refine the strategy, keep the momentum going.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <p class="cta-label">Ready to begin?</p>
+  <h2 class="cta-title">Let's tell<br><em>your story.</em></h2>
+  <p class="cta-sub">Whether you're launching a new brand or reimagining an existing one — we're ready to craft something extraordinary together.</p>
+  <div class="cta-btns">
+    <a href="mailto:hello@heritedgemedia.com" class="btn-white">Start a Conversation</a>
+    <a href="#services" class="btn-outline-white">Explore Services</a>
+  </div>
+</section>
+
+<div class="motif-border"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">Herit<span>Edge</span> Media</div>
+      <div class="footer-tagline">Heritage. Creativity. Edge.</div>
+      <p class="footer-desc">A Jodhpur-based creative agency blending heritage-inspired aesthetics with contemporary strategy and storytelling — for brands that mean business.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Services</div>
+      <ul class="footer-links">
+        <li><a href="#services">Brand Strategy & Identity</a></li>
+        <li><a href="#services">Social Media Management</a></li>
+        <li><a href="#services">Content Creation</a></li>
+        <li><a href="#services">Digital Marketing</a></li>
+        <li><a href="#services">Consultation</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Connect</div>
+      <ul class="footer-links">
+        <li><a href="mailto:hello@heritedgemedia.com">hello@heritedgemedia.com</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#cta">Start a Project</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2024 HeritEdge Media. All rights reserved.</span>
+    <span class="footer-location">Jodhpur, Rajasthan, India</span>
+  </div>
+</footer>
+
+<script>
+  // ── Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link, .mobile-cta');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+
+  mobileNavLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // ── Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // ── Nav shrink on scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) {
+      navbar.style.padding = window.innerWidth <= 768 ? '13px 24px' : '13px 60px';
+      navbar.style.borderBottomColor = 'rgba(201,168,76,0.3)';
+    } else {
+      navbar.style.padding = window.innerWidth <= 768 ? '18px 24px' : '20px 60px';
+      navbar.style.borderBottomColor = 'rgba(201,168,76,0.18)';
+    }
+  });
+</script>
+</body>
+</html>
